@@ -425,10 +425,11 @@ contract FixedTermLoanAgency is IFixedTermLoanAgency, UpgradeableClaimable {
      */
     function borrowLimit(ITrueFiPool2 pool, address borrower) public view returns (uint256) {
         uint8 poolDecimals = ITrueFiPool2WithDecimals(address(pool)).decimals();
+        uint8 effectiveScore = creditModel.effectiveScore(creditOracle.score(borrower), pool, collateralVault.stakedAmount(borrower), 0);
         return
             creditModel.borrowLimit(
                 pool,
-                creditOracle.score(borrower),
+                effectiveScore,
                 creditOracle.maxBorrowerLimit(borrower),
                 0,
                 totalBorrowed(borrower, poolDecimals)
