@@ -67,7 +67,7 @@ export const setupTruefi2 = async (owner: Wallet, provider: MockProvider, custom
   const stakingVault = await deployContract(StakingVault__factory)
 
   const poolFactory = await deployContract(PoolFactory__factory)
-  const poolImplementation = await deployContract(TrueFiPool2__factory)
+  const poolImplementation = customDeployed?.poolImplementation || (await deployContract(TrueFiPool2__factory));
   const implementationReference = await deployContract(ImplementationReference__factory, poolImplementation.address)
 
   const tru = await deployContract(MockTrueCurrency__factory)
